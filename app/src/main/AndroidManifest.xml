@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.myexamproject">
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/bt"
+        android:label="@string/app_name"
+        android:roundIcon="@drawable/bt"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.MyExamProject">
+        <activity
+            android:name=".UpdateIFActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MyIFActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MainActivity"
+            android:exported="false" />
+        <activity
+            android:name=".UpdateGoodsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".RegisterActivity"
+            android:exported="false" />
+        <activity
+            android:name=".QueryGoodsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".PersonalCenterActivity"
+            android:exported="false" />
+        <activity
+            android:name=".LoginActivity"
+            android:exported="false" />
+        <activity
+            android:name=".DeleteGoodsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".BackActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AddGoodsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".WelcomeActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>
