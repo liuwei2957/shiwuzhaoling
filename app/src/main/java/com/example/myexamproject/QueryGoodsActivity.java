@@ -3,12 +3,10 @@ package com.example.myexamproject;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
-import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.example.myexamproject.utils.MySQLiteOpenHelper;
@@ -20,10 +18,7 @@ public class QueryGoodsActivity extends AppCompatActivity {
     //定义组件
     private ListView listView;
     private EditText etSearch;
-    private Spinner spinnerSearchField;
     private Button btnSearch;
-    private String[] searchFields = {"编号", "物品名称", "分类"};
-    private String[] dbFields = {"goodid", "goodname", "category"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,13 +32,7 @@ public class QueryGoodsActivity extends AppCompatActivity {
     private void initView() {
         listView = (ListView)findViewById(R.id.lst_orders);
         etSearch = (EditText)findViewById(R.id.et_search);
-        spinnerSearchField = (Spinner)findViewById(R.id.spinner_search_field);
         btnSearch = (Button)findViewById(R.id.btn_search);
-
-        // 设置搜索字段下拉列表
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, searchFields);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerSearchField.setAdapter(adapter);
 
         // 加载所有物品
         loadAllGoods();
@@ -54,9 +43,7 @@ public class QueryGoodsActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String query = etSearch.getText().toString().trim();
                 if (!query.isEmpty()) {
-                    int selectedPosition = spinnerSearchField.getSelectedItemPosition();
-                    String field = dbFields[selectedPosition];
-                    searchGoods(query, field);
+                    searchGoods(query);
                 } else {
                     Toast.makeText(QueryGoodsActivity.this, "请输入搜索关键词", Toast.LENGTH_SHORT).show();
                 }
@@ -72,10 +59,10 @@ public class QueryGoodsActivity extends AppCompatActivity {
         dao.close();
     }
 
-    private void searchGoods(String query, String field) {
+    private void searchGoods(String query) {
         MySQLiteOpenHelper dao = new MySQLiteOpenHelper(getApplicationContext());
         dao.open();
-        List<Map<String,Object>> searchResults = dao.searchGoods(query, field);
+        List<Map<String,Object>> searchResults = dao.searchGoods(query);
         if (searchResults != null && !searchResults.isEmpty()) {
             updateListView(searchResults);
         } else {

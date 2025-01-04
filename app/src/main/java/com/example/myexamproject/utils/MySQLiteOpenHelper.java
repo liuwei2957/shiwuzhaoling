@@ -116,10 +116,11 @@ public class MySQLiteOpenHelper {
 
     //根据条件搜索物品
     @SuppressLint("Range")
-    public ArrayList<Map<String, Object>> searchGoods(String query, String field) {
+    public ArrayList<Map<String, Object>> searchGoods(String query) {
         ArrayList<Map<String, Object>> listGoods = new ArrayList<Map<String, Object>>();
-        String selection = field + " LIKE ?";
-        String[] selectionArgs = new String[]{"%" + query + "%"};
+        // 构建多字段搜索条件
+        String selection = "goodid LIKE ? OR goodname LIKE ? OR category LIKE ?";
+        String[] selectionArgs = new String[]{"%" + query + "%", "%" + query + "%", "%" + query + "%"};
         
         try {
             Cursor cursor = db.query("tb_Good", null, selection, selectionArgs, null, null, null);
