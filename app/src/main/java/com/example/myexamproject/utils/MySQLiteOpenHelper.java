@@ -120,22 +120,28 @@ public class MySQLiteOpenHelper {
         ArrayList<Map<String, Object>> listGoods = new ArrayList<Map<String, Object>>();
         String selection = field + " LIKE ?";
         String[] selectionArgs = new String[]{"%" + query + "%"};
-        Cursor cursor = db.query("tb_Good", null, selection, selectionArgs, null, null, null);
-
-        int resultCounts = cursor.getCount();
-        if (resultCounts == 0) {
-            return null;
-        } else {
-            while (cursor.moveToNext()) {
-                Map<String, Object> map = new HashMap<String, Object>();
-                map.put("goodid", cursor.getString(cursor.getColumnIndex("goodid")));
-                map.put("goodname", cursor.getString(cursor.getColumnIndex("goodname")));
-                map.put("goodtime", cursor.getString(cursor.getColumnIndex("goodtime")));
-                map.put("goodnote", cursor.getString(cursor.getColumnIndex("goodnote")));
-                map.put("category", cursor.getString(cursor.getColumnIndex("category")));
-                listGoods.add(map);
+        
+        try {
+            Cursor cursor = db.query("tb_Good", null, selection, selectionArgs, null, null, null);
+            if (cursor != null && cursor.getCount() > 0) {
+                while (cursor.moveToNext()) {
+                    Map<String, Object> map = new HashMap<String, Object>();
+                    map.put("goodid", cursor.getString(cursor.getColumnIndex("goodid")));
+                    map.put("goodname", cursor.getString(cursor.getColumnIndex("goodname")));
+                    map.put("goodtime", cursor.getString(cursor.getColumnIndex("goodtime")));
+                    map.put("goodnote", cursor.getString(cursor.getColumnIndex("goodnote")));
+                    map.put("category", cursor.getString(cursor.getColumnIndex("category")));
+                    listGoods.add(map);
+                }
+                cursor.close();
+                return listGoods;
             }
-            return listGoods;
+            if (cursor != null) {
+                cursor.close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+        return null;
     }
 }

@@ -9,6 +9,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.example.myexamproject.utils.MySQLiteOpenHelper;
 
@@ -57,7 +58,7 @@ public class QueryGoodsActivity extends AppCompatActivity {
                     String field = dbFields[selectedPosition];
                     searchGoods(query, field);
                 } else {
-                    loadAllGoods();
+                    Toast.makeText(QueryGoodsActivity.this, "请输入搜索关键词", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -67,12 +68,7 @@ public class QueryGoodsActivity extends AppCompatActivity {
         MySQLiteOpenHelper dao = new MySQLiteOpenHelper(getApplicationContext());
         dao.open();
         List<Map<String,Object>> mOrderData = dao.getAllGoods();
-        if (mOrderData != null) {
-            String[] from = {"goodid", "goodname", "goodtime", "category"};
-            int[] to = {R.id.tv_lst_goodid, R.id.tv_lst_goodname, R.id.tv_lst_goodtime, R.id.tv_lst_category};
-            SimpleAdapter listItemAdapter = new SimpleAdapter(QueryGoodsActivity.this, mOrderData, R.layout.item_list, from, to);
-            listView.setAdapter(listItemAdapter);
-        }
+        updateListView(mOrderData);
         dao.close();
     }
 
@@ -80,12 +76,23 @@ public class QueryGoodsActivity extends AppCompatActivity {
         MySQLiteOpenHelper dao = new MySQLiteOpenHelper(getApplicationContext());
         dao.open();
         List<Map<String,Object>> searchResults = dao.searchGoods(query, field);
-        if (searchResults != null) {
-            String[] from = {"goodid", "goodname", "goodtime", "category"};
-            int[] to = {R.id.tv_lst_goodid, R.id.tv_lst_goodname, R.id.tv_lst_goodtime, R.id.tv_lst_category};
-            SimpleAdapter listItemAdapter = new SimpleAdapter(QueryGoodsActivity.this, searchResults, R.layout.item_list, from, to);
-            listView.setAdapter(listItemAdapter);
+        if (searchResults != null && !searchResults.isEmpty()) {
+            updateListView(searchResults);
+        } else {
+            Toast.makeText(this, "未找到匹配的结果", Toast.LENGTH_SHORT).show();
+            loadAllGoods();
         }
         dao.close();
+    }
+
+    private void updateListView(List<Map<String,Object>> data) {
+        if (data != null) {
+            String[] from = {"goodid", "goodname", "goodtime", "category", "goodnote"};
+            int[] to = {R.id.tv_lst_goodid, R.id.tv_lst_goodname, R.id.tv_lst_goodtime, R.id.tv_lst_category, R.id.tv_lst_goodnote};
+            SimpleAdapter listItemAdapter = new SimpleAdapter(QueryGoodsActivity.this, data, R.layout.item_list, from, to);
+            listView.setAdapter(listItemAdapter);
+        } else {
+            Toast.makeText(this, "暂无数据", Toast.LENGTH_SHORT).show();
+        }
     }
 }
