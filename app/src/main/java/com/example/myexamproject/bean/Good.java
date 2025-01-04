@@ -5,4 +5,5 @@ public class Good {
     public String goodtime;
     public String goodnote;
     public String goodid;
+    public String category;
 }

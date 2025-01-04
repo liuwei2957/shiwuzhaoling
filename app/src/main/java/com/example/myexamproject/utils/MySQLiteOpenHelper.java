@@ -55,6 +55,7 @@ public class MySQLiteOpenHelper {
         values.put("goodname", good.goodname);
         values.put("goodtime", good.goodtime);
         values.put("goodnote", good.goodnote);
+        values.put("category", good.category);
 
         // 通过insert()方法插入数据库中
         return db.insert("tb_Good", null, values);
@@ -71,6 +72,7 @@ public class MySQLiteOpenHelper {
         value.put("goodname", good.goodname);
         value.put("goodtime", good.goodtime);
         value.put("goodnote", good.goodnote);
+        value.put("category", good.category);
         return db.update("tb_Good", value, "goodid=?", new String[]{String.valueOf(good.goodid)});
     }
 
@@ -84,7 +86,7 @@ public class MySQLiteOpenHelper {
             good.goodname = cursor.getString(cursor.getColumnIndex("goodname"));
             good.goodtime = cursor.getString(cursor.getColumnIndex("goodtime"));
             good.goodnote = cursor.getString(cursor.getColumnIndex("goodnote"));
-
+            good.category = cursor.getString(cursor.getColumnIndex("category"));
         }
         return good;
     }
@@ -105,7 +107,32 @@ public class MySQLiteOpenHelper {
                 map.put("goodname", cursor.getString(cursor.getColumnIndex("goodname")));
                 map.put("goodtime", cursor.getString(cursor.getColumnIndex("goodtime")));
                 map.put("goodnote", cursor.getString(cursor.getColumnIndex("goodnote")));
+                map.put("category", cursor.getString(cursor.getColumnIndex("category")));
+                listGoods.add(map);
+            }
+            return listGoods;
+        }
+    }
 
+    //根据条件搜索物品
+    @SuppressLint("Range")
+    public ArrayList<Map<String, Object>> searchGoods(String query, String field) {
+        ArrayList<Map<String, Object>> listGoods = new ArrayList<Map<String, Object>>();
+        String selection = field + " LIKE ?";
+        String[] selectionArgs = new String[]{"%" + query + "%"};
+        Cursor cursor = db.query("tb_Good", null, selection, selectionArgs, null, null, null);
+
+        int resultCounts = cursor.getCount();
+        if (resultCounts == 0) {
+            return null;
+        } else {
+            while (cursor.moveToNext()) {
+                Map<String, Object> map = new HashMap<String, Object>();
+                map.put("goodid", cursor.getString(cursor.getColumnIndex("goodid")));
+                map.put("goodname", cursor.getString(cursor.getColumnIndex("goodname")));
+                map.put("goodtime", cursor.getString(cursor.getColumnIndex("goodtime")));
+                map.put("goodnote", cursor.getString(cursor.getColumnIndex("goodnote")));
+                map.put("category", cursor.getString(cursor.getColumnIndex("category")));
                 listGoods.add(map);
             }
             return listGoods;
