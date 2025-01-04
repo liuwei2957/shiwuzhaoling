@@ -1,0 +1,8 @@
+{
+    "name": "Android Build",
+    "image": "mingc/android-build-box:latest",
+    "remoteEnv": {
+        "ANDROID_SDK_ROOT": "/opt/android-sdk",
+        "ANDROID_HOME": "/opt/android-sdk"
+    }
+}
