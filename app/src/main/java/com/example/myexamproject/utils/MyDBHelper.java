@@ -7,18 +7,18 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class MyDBHelper extends SQLiteOpenHelper {
     //常量定义
     public static final String name = "db_good1.db";
-    public static final int DB_VERSION = 2;
+    public static final int DB_VERSION = 3;
     //创建表
-    public static final String CREATE_USERDATA1 = "create table tb_Good(goodid char(10)primary key,goodname varchar(20),goodtime varchar(20),goodnote varchar(20),category varchar(20))";
+    public static final String CREATE_USERDATA1 = "create table tb_Good(goodid char(10)primary key,goodname varchar(20),goodtime varchar(20),goodnote varchar(20),category varchar(20),type varchar(10))";
     public MyDBHelper(Context context) {
         super(context, name, null, DB_VERSION);
     }
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(CREATE_USERDATA1);
-        db.execSQL("insert into tb_Good(goodid,goodname,goodtime,goodnote,category)Values('001','小米9','5.28下午','难受','电子产品')");
-        db.execSQL("insert into tb_Good(goodid,goodname,goodtime,goodnote,category)Values('002','绿水鬼','5.29上午','寻找手表','生活用品')");
-        db.execSQL("insert into tb_Good(goodid,goodname,goodtime,goodnote,category)Values('003','JAVA','6.29上午','重赏','书籍')");
+        db.execSQL("insert into tb_Good(goodid,goodname,goodtime,goodnote,category,type)Values('001','小米9','5.28下午','难受','电子产品','丢失')");
+        db.execSQL("insert into tb_Good(goodid,goodname,goodtime,goodnote,category,type)Values('002','绿水鬼','5.29上午','寻找手表','生活用品','丢失')");
+        db.execSQL("insert into tb_Good(goodid,goodname,goodtime,goodnote,category,type)Values('003','JAVA','6.29上午','重赏','书籍','丢失')");
     }
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
@@ -27,6 +27,10 @@ public class MyDBHelper extends SQLiteOpenHelper {
             db.execSQL("UPDATE tb_Good SET category='电子产品' WHERE goodid='001'");
             db.execSQL("UPDATE tb_Good SET category='生活用品' WHERE goodid='002'");
             db.execSQL("UPDATE tb_Good SET category='书籍' WHERE goodid='003'");
+        }
+        if (oldVersion < 3) {
+            db.execSQL("ALTER TABLE tb_Good ADD COLUMN type varchar(10)");
+            db.execSQL("UPDATE tb_Good SET type='丢失'");
         }
     }
 }

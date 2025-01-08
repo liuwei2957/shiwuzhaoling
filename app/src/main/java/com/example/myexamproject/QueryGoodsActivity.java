@@ -74,8 +74,8 @@ public class QueryGoodsActivity extends AppCompatActivity {
 
     private void updateListView(List<Map<String,Object>> data) {
         if (data != null) {
-            String[] from = {"goodid", "goodname", "goodtime", "category", "goodnote"};
-            int[] to = {R.id.tv_lst_goodid, R.id.tv_lst_goodname, R.id.tv_lst_goodtime, R.id.tv_lst_category, R.id.tv_lst_goodnote};
+            String[] from = {"goodid", "goodname", "goodtime", "category", "type", "goodnote"};
+            int[] to = {R.id.tv_lst_goodid, R.id.tv_lst_goodname, R.id.tv_lst_goodtime, R.id.tv_lst_category, R.id.tv_lst_type, R.id.tv_lst_goodnote};
             SimpleAdapter listItemAdapter = new SimpleAdapter(QueryGoodsActivity.this, data, R.layout.item_list, from, to);
             listView.setAdapter(listItemAdapter);
         } else {

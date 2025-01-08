@@ -6,4 +6,5 @@ public class Good {
     public String goodnote;
     public String goodid;
     public String category;
+    public String type;  // 拾得/丢失
 }

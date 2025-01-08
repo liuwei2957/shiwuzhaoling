@@ -8,6 +8,8 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -21,6 +23,9 @@ public class AddGoodsActivity extends AppCompatActivity implements View.OnClickL
     private EditText etGoodtime;
     private EditText etGoodnote;
     private Spinner spinnerCategory;
+    private RadioGroup rgType;
+    private RadioButton rbLost;
+    private RadioButton rbFound;
     private Button btnAdd;
 
     private String[] categories = {"电子产品", "生活用品", "衣服", "书籍", "其他"};
@@ -40,6 +45,9 @@ public class AddGoodsActivity extends AppCompatActivity implements View.OnClickL
         etGoodtime = (EditText) findViewById(R.id.et_goodtime);
         etGoodnote = (EditText) findViewById(R.id.et_goodnote);
         spinnerCategory = (Spinner) findViewById(R.id.spinner_category);
+        rgType = (RadioGroup) findViewById(R.id.rg_type);
+        rbLost = (RadioButton) findViewById(R.id.rb_lost);
+        rbFound = (RadioButton) findViewById(R.id.rb_found);
 
         // 设置分类下拉列表
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, categories);
@@ -59,6 +67,7 @@ public class AddGoodsActivity extends AppCompatActivity implements View.OnClickL
         String goodtime = etGoodtime.getText().toString().trim();
         String goodnote = etGoodnote.getText().toString();
         String category = spinnerCategory.getSelectedItem().toString();
+        String type = rbLost.isChecked() ? "丢失" : "拾得";
 
         //检验信息是否正确
         if (TextUtils.isEmpty(goodid)) {
@@ -85,6 +94,7 @@ public class AddGoodsActivity extends AppCompatActivity implements View.OnClickL
         good.goodtime = goodtime;
         good.goodnote = goodnote;
         good.category = category;
+        good.type = type;
 
         //创建数据库访问对象
         MySQLiteOpenHelper dao = new MySQLiteOpenHelper(getApplicationContext());

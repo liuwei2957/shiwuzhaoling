@@ -56,6 +56,7 @@ public class MySQLiteOpenHelper {
         values.put("goodtime", good.goodtime);
         values.put("goodnote", good.goodnote);
         values.put("category", good.category);
+        values.put("type", good.type);
 
         // 通过insert()方法插入数据库中
         return db.insert("tb_Good", null, values);
@@ -73,6 +74,7 @@ public class MySQLiteOpenHelper {
         value.put("goodtime", good.goodtime);
         value.put("goodnote", good.goodnote);
         value.put("category", good.category);
+        value.put("type", good.type);
         return db.update("tb_Good", value, "goodid=?", new String[]{String.valueOf(good.goodid)});
     }
 
@@ -87,6 +89,7 @@ public class MySQLiteOpenHelper {
             good.goodtime = cursor.getString(cursor.getColumnIndex("goodtime"));
             good.goodnote = cursor.getString(cursor.getColumnIndex("goodnote"));
             good.category = cursor.getString(cursor.getColumnIndex("category"));
+            good.type = cursor.getString(cursor.getColumnIndex("type"));
         }
         return good;
     }
@@ -108,6 +111,7 @@ public class MySQLiteOpenHelper {
                 map.put("goodtime", cursor.getString(cursor.getColumnIndex("goodtime")));
                 map.put("goodnote", cursor.getString(cursor.getColumnIndex("goodnote")));
                 map.put("category", cursor.getString(cursor.getColumnIndex("category")));
+                map.put("type", cursor.getString(cursor.getColumnIndex("type")));
                 listGoods.add(map);
             }
             return listGoods;
@@ -119,8 +123,8 @@ public class MySQLiteOpenHelper {
     public ArrayList<Map<String, Object>> searchGoods(String query) {
         ArrayList<Map<String, Object>> listGoods = new ArrayList<Map<String, Object>>();
         // 构建多字段搜索条件
-        String selection = "goodid LIKE ? OR goodname LIKE ? OR category LIKE ?";
-        String[] selectionArgs = new String[]{"%" + query + "%", "%" + query + "%", "%" + query + "%"};
+        String selection = "goodid LIKE ? OR goodname LIKE ? OR category LIKE ? OR type LIKE ?";
+        String[] selectionArgs = new String[]{"%" + query + "%", "%" + query + "%", "%" + query + "%", "%" + query + "%"};
         
         try {
             Cursor cursor = db.query("tb_Good", null, selection, selectionArgs, null, null, null);
@@ -132,6 +136,7 @@ public class MySQLiteOpenHelper {
                     map.put("goodtime", cursor.getString(cursor.getColumnIndex("goodtime")));
                     map.put("goodnote", cursor.getString(cursor.getColumnIndex("goodnote")));
                     map.put("category", cursor.getString(cursor.getColumnIndex("category")));
+                    map.put("type", cursor.getString(cursor.getColumnIndex("type")));
                     listGoods.add(map);
                 }
                 cursor.close();
